@@ -11,9 +11,14 @@ if (isset($data['cardID']) && isset($data['mode'])) {
     $mode = mysqli_real_escape_string($conn, $data['mode']);
     $device_uid = isset($data['deviceID']) ? mysqli_real_escape_string($conn, $data['deviceID']) : 'UNKNOWN_DEVICE';
     
+    // 1. Fetch current system mode from settings (Prioritize server-side state)
+    $mode_res = mysqli_query($conn, "SELECT setting_value FROM settings WHERE setting_key = 'system_mode' LIMIT 1");
+    $mode_row = mysqli_fetch_assoc($mode_res);
+    $system_mode = $mode_row ? $mode_row['setting_value'] : 'auth_mod';
+
     $response_code = "000";
 
-    // 1. Device Tracking & Management
+    // 2. Device Tracking & Management
     $device_id = null;
     $dev_res = mysqli_query($conn, "SELECT id FROM devices WHERE device_uid = '$device_uid'");
     if (mysqli_num_rows($dev_res) > 0) {
@@ -26,16 +31,20 @@ if (isset($data['cardID']) && isset($data['mode'])) {
         $device_id = mysqli_insert_id($conn);
     }
 
-    // 2. Registration Mode Handling (Store for Wizard)
-    if ($mode === 'reg_mod') {
+    // 3. Registration Mode Handling (Capture for Wizard)
+    if ($system_mode === 'reg_mod') {
+        // Clear previous scans from this device to avoid confusion
+        mysqli_query($conn, "DELETE FROM scanned_cards_temp WHERE device_uid = '$device_uid'");
+        
+        // Insert new scan
         mysqli_query($conn, "INSERT INTO scanned_cards_temp (device_uid, card_uid) VALUES ('$device_uid', '$uid')");
-        // Always return success in reg mode to show the user it was captured
+        
         $response_code = "001";
         $log_action = "Registration Scan Captured";
         mysqli_query($conn, "INSERT INTO logs (card_uid, device_id, action) VALUES ('$uid', $device_id, '$log_action')");
     } 
-    else if ($mode === 'auth_mod') {
-        // 3. Authentication Mode
+    else {
+        // 4. Authentication Mode
         
         // Fetch settings for limits
         $max_access = 0;
@@ -92,12 +101,7 @@ if (isset($data['cardID']) && isset($data['mode'])) {
         mysqli_query($conn, $log_query);
     }
 
-    $mode_res = mysqli_query($conn, "SELECT setting_value FROM settings WHERE setting_key = 'system_mode'");
-    $mode_row = mysqli_fetch_assoc($mode_res);
-    $current_system_mode = $mode_row['setting_value'];
-
-    echo json_encode(['code' => $response_code, 'mode' => $current_system_mode]);
-
+    echo json_encode(['code' => $response_code, 'mode' => $system_mode]);
 } else {
     echo json_encode(['error' => 'Invalid request']);
 }

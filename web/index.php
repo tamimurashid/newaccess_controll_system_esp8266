@@ -649,8 +649,8 @@
                         <div class="mt-4">
                             <label class="form-label small fw-bold">Capture from Device:</label>
                             <div class="input-group w-75 mx-auto">
-                                <select id="wiz_device" class="form-select">
-                                    <option value="">Detecting Devices...</option>
+                                <select id="wiz_device" class="form-select" onchange="startScanPolling()">
+                                    <option value="">Select Capture Device</option>
                                 </select>
                                 <button class="btn btn-outline-primary" type="button" onclick="loadDevicesForWizard()">
                                     <i class="bi bi-arrow-clockwise"></i>
@@ -658,15 +658,28 @@
                             </div>
                         </div>
 
+                        <div class="mt-4 w-75 mx-auto">
+                            <label class="form-label small fw-bold">Enrolled Card UID:</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-credit-card-2-front"></i></span>
+                                <input type="text" id="wiz_card_uid_input" class="form-control font-monospace" placeholder="Wait for scan or type manually..." oninput="capturedUid = this.value">
+                            </div>
+                        </div>
+
                         <div id="scan-status" class="mt-3">
                             <div class="spinner-border spinner-border-sm text-primary me-2"></div>
-                            <span class="text-primary fw-600">Waiting for live signal...</span>
+                            <span class="text-primary fw-600" id="scan-status-text">Waiting for device selection...</span>
                         </div>
                         
                         <div id="scan-success" class="mt-3 d-none">
-                            <div class="alert alert-success d-flex align-items-center justify-content-center">
-                                <i class="bi bi-check-circle-fill me-2"></i>
-                                <span>Card Detected: <strong id="detected_uid">---</strong></span>
+                            <div class="alert alert-success d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-check-circle-fill me-2"></i>
+                                    <span>Card Detected: <strong id="detected_uid" class="font-monospace">---</strong></span>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="clearCapturedScan()">
+                                    <i class="bi bi-x-circle"></i> Clear
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -1034,13 +1047,16 @@
             }
 
             currentStep += dir;
-            if(currentStep === 3) startScanPolling();
+            if(currentStep === 3) {
+                $('#wiz_card_uid_input').val(capturedUid || '');
+                startScanPolling();
+            }
             else stopScanPolling();
 
             if(currentStep === 4) {
                 $('#rev_name').text($('#wiz_name').val());
                 $('#rev_org').text($('#wiz_org option:selected').text());
-                $('#rev_card').text(capturedUid);
+                $('#rev_card').text(capturedUid || 'NOT SCANNED');
             }
 
             updateWizardUI();
@@ -1071,6 +1087,7 @@
                 fetch(`api/check_scan.php?deviceID=${devUid}`).then(r => r.json()).then(d => {
                     if(d.success) {
                         capturedUid = d.uid;
+                        $('#wiz_card_uid_input').val(capturedUid);
                         $('#detected_uid').text(capturedUid);
                         $('#scan-status').addClass('d-none');
                         $('#scan-success').removeClass('d-none');
@@ -1083,6 +1100,15 @@
         function stopScanPolling() {
             if(scanInterval) clearInterval(scanInterval);
             scanInterval = null;
+        }
+
+        function clearCapturedScan() {
+            capturedUid = null;
+            $('#wiz_card_uid_input').val('');
+            $('#detected_uid').text('---');
+            $('#scan-success').addClass('d-none');
+            $('#scan-status').removeClass('d-none');
+            startScanPolling();
         }
 
         function finalizeRegistration() {

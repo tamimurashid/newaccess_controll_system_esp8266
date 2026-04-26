@@ -65,14 +65,21 @@ $queries = [
         FOREIGN KEY (section_id) REFERENCES sections(id) ON DELETE SET NULL
     )",
 
-    "CREATE TABLE IF NOT EXISTS scanned_cards_temp (
+    \"CREATE TABLE IF NOT EXISTS settings (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        setting_key VARCHAR(50) NOT NULL UNIQUE,
+        setting_value VARCHAR(100) NOT NULL,
+        INDEX idx_setting_key (setting_key)
+    )\",
+
+    \"CREATE TABLE IF NOT EXISTS scanned_cards_temp (
         id INT AUTO_INCREMENT PRIMARY KEY,
         device_uid VARCHAR(50) NOT NULL,
         card_uid VARCHAR(50) NOT NULL,
         scanned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )",
+    )\",
 
-    "CREATE TABLE IF NOT EXISTS logs (
+    \"CREATE TABLE IF NOT EXISTS logs (
         id INT AUTO_INCREMENT PRIMARY KEY,
         user_id INT,
         card_uid VARCHAR(50) NOT NULL,
@@ -81,12 +88,12 @@ $queries = [
         timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
         FOREIGN KEY (device_id) REFERENCES devices(id) ON DELETE SET NULL
-    )",
+    )\",
 
-    "INSERT IGNORE INTO settings (setting_key, setting_value) VALUES ('system_mode', 'auth_mod')",
-    "INSERT IGNORE INTO settings (setting_key, setting_value) VALUES ('max_access_per_day', '0')",
-    "INSERT IGNORE INTO settings (setting_key, setting_value) VALUES ('max_failed_attempts', '0')",
-    "INSERT IGNORE INTO organizations (id, name) VALUES (1, 'Default Organization')"
+    \"INSERT IGNORE INTO settings (setting_key, setting_value) VALUES ('system_mode', 'auth_mod')\",
+    \"INSERT IGNORE INTO settings (setting_key, setting_value) VALUES ('max_access_per_day', '0')\",
+    \"INSERT IGNORE INTO settings (setting_key, setting_value) VALUES ('max_failed_attempts', '0')\",
+    \"INSERT IGNORE INTO organizations (id, name) VALUES (1, 'Default Organization')\"
 ];
 
 foreach ($queries as $q) {
