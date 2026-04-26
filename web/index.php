@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Universal RFID Access Control</title>
-    
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+
     <!-- DataTables Bootstrap 5 CSS -->
     <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-    
+
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
@@ -47,15 +48,15 @@
             color: #fff;
             transition: all 0.3s;
             z-index: 1000;
-            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
         }
-        
+
         .sidebar-header {
             padding: 30px 20px;
             text-align: center;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
         }
-        
+
         .sidebar-header h4 {
             margin: 0;
             font-weight: 700;
@@ -90,10 +91,11 @@
             font-size: 1.2rem;
         }
 
-        .sidebar-menu li a:hover, .sidebar-menu li a.active {
-            background-color: rgba(255,255,255,0.1);
+        .sidebar-menu li a:hover,
+        .sidebar-menu li a.active {
+            background-color: rgba(255, 255, 255, 0.1);
             color: #fff;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .sidebar-menu li a.active {
@@ -111,7 +113,7 @@
         .topbar {
             height: 70px;
             background-color: #fff;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -157,7 +159,7 @@
             border: none;
             border-radius: 15px;
             background-color: #fff;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             margin-bottom: 25px;
         }
 
@@ -173,8 +175,13 @@
         }
 
         /* Prevent layout collapse during AJAX refreshes */
-        #devices-container { min-height: 120px; }
-        #dash-recent-logs tr { height: 42px; }
+        #devices-container {
+            min-height: 120px;
+        }
+
+        #dash-recent-logs tr {
+            height: 42px;
+        }
 
         .stat-icon-wrapper {
             width: 60px;
@@ -188,10 +195,21 @@
             color: #fff;
         }
 
-        .bg-gradient-primary { background: linear-gradient(135deg, #4361ee, #4cc9f0); }
-        .bg-gradient-success { background: linear-gradient(135deg, #2ecc71, #27ae60); }
-        .bg-gradient-info { background: linear-gradient(135deg, #1abc9c, #16a085); }
-        .bg-gradient-danger { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #4361ee, #4cc9f0);
+        }
+
+        .bg-gradient-success {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+        }
+
+        .bg-gradient-info {
+            background: linear-gradient(135deg, #1abc9c, #16a085);
+        }
+
+        .bg-gradient-danger {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
 
         .stat-details h6 {
             font-size: 0.8rem;
@@ -221,13 +239,28 @@
             color: var(--slate);
         }
 
-        .view-section { display: none; }
-        .view-section.active { display: block; }
-        .view-section.active.animate-in { animation: slideIn 0.4s ease; }
+        .view-section {
+            display: none;
+        }
+
+        .view-section.active {
+            display: block;
+        }
+
+        .view-section.active.animate-in {
+            animation: slideIn 0.4s ease;
+        }
 
         @keyframes slideIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Wizard Styles */
@@ -308,8 +341,13 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         /* RFID Scan Animation */
@@ -329,20 +367,57 @@
         }
 
         @keyframes pulse-animation {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.1); opacity: 0.7; }
-            100% { transform: scale(1); opacity: 1; }
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 0.7;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
         /* Badges */
-        .badge-active { background-color: #e8f8f1; color: #2ecc71; padding: 6px 12px; border-radius: 20px; font-weight: 600; font-size: 0.75rem;}
-        .badge-frozen { background-color: #fdf2f2; color: #e74c3c; padding: 6px 12px; border-radius: 20px; font-weight: 600; font-size: 0.75rem;}
-        .badge-online { background-color: #e8f8f1; color: #2ecc71; }
-        .badge-offline { background-color: #fdf2f2; color: #e74c3c; }
+        .badge-active {
+            background-color: #e8f8f1;
+            color: #2ecc71;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
 
-        .btn-rounded { border-radius: 10px; }
+        .badge-frozen {
+            background-color: #fdf2f2;
+            color: #e74c3c;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+
+        .badge-online {
+            background-color: #e8f8f1;
+            color: #2ecc71;
+        }
+
+        .badge-offline {
+            background-color: #fdf2f2;
+            color: #e74c3c;
+        }
+
+        .btn-rounded {
+            border-radius: 10px;
+        }
     </style>
 </head>
+
 <body>
 
     <!-- Sidebar -->
@@ -351,12 +426,18 @@
             <h4><i class="bi bi-cpu-fill me-2"></i> Universal RFID</h4>
         </div>
         <ul class="sidebar-menu">
-            <li><a href="#" onclick="switchView('dashboard')" id="nav-dashboard" class="active"><i class="bi bi-grid-fill"></i> Dashboard</a></li>
-            <li><a href="#" onclick="switchView('users')" id="nav-users"><i class="bi bi-people-fill"></i> Member Directory</a></li>
-            <li><a href="#" onclick="switchView('orgs')" id="nav-orgs"><i class="bi bi-building-fill"></i> Organizations</a></li>
-            <li><a href="#" onclick="switchView('devices')" id="nav-devices"><i class="bi bi-broadcast-pin"></i> Devices</a></li>
-            <li><a href="#" onclick="switchView('logs')" id="nav-logs"><i class="bi bi-file-earmark-medical-fill"></i> Activity Logs</a></li>
-            <li><a href="#" onclick="switchView('settings')" id="nav-settings"><i class="bi bi-gear-wide-connected"></i> System Rules</a></li>
+            <li><a href="#" onclick="switchView('dashboard')" id="nav-dashboard" class="active"><i
+                        class="bi bi-grid-fill"></i> Dashboard</a></li>
+            <li><a href="#" onclick="switchView('users')" id="nav-users"><i class="bi bi-people-fill"></i> Member
+                    Directory</a></li>
+            <li><a href="#" onclick="switchView('orgs')" id="nav-orgs"><i class="bi bi-building-fill"></i>
+                    Organizations</a></li>
+            <li><a href="#" onclick="switchView('devices')" id="nav-devices"><i class="bi bi-broadcast-pin"></i>
+                    Devices</a></li>
+            <li><a href="#" onclick="switchView('logs')" id="nav-logs"><i class="bi bi-file-earmark-medical-fill"></i>
+                    Activity Logs</a></li>
+            <li><a href="#" onclick="switchView('settings')" id="nav-settings"><i class="bi bi-gear-wide-connected"></i>
+                    System Rules</a></li>
         </ul>
     </div>
 
@@ -375,7 +456,7 @@
 
         <!-- Content Area -->
         <div class="content-area">
-            
+
             <!-- Dashboard -->
             <div id="view-dashboard" class="view-section active">
                 <div class="row">
@@ -420,13 +501,17 @@
                 <div class="row">
                     <div class="col-lg-8">
                         <div class="card">
-                            <div class="card-header"><h5>Weekly Access Traffic</h5></div>
+                            <div class="card-header">
+                                <h5>Weekly Access Traffic</h5>
+                            </div>
                             <div class="card-body"><canvas id="accessChart" height="250"></canvas></div>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="card">
-                            <div class="card-header"><h5>Member Status</h5></div>
+                            <div class="card-header">
+                                <h5>Member Status</h5>
+                            </div>
                             <div class="card-body"><canvas id="statusChart" height="250"></canvas></div>
                         </div>
                     </div>
@@ -437,16 +522,23 @@
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h5 class="mb-0">Recent Activity</h5>
-                                <button class="btn btn-sm btn-light border" onclick="switchView('logs')">View All</button>
+                                <button class="btn btn-sm btn-light border" onclick="switchView('logs')">View
+                                    All</button>
                             </div>
                             <div class="card-body p-0">
                                 <div class="table-responsive">
                                     <table class="table table-hover align-middle mb-0">
                                         <thead class="table-light">
-                                            <tr><th>Time</th><th>User</th><th>Action</th></tr>
+                                            <tr>
+                                                <th>Time</th>
+                                                <th>User</th>
+                                                <th>Action</th>
+                                            </tr>
                                         </thead>
                                         <tbody id="dash-recent-logs">
-                                            <tr><td colspan="3" class="text-center py-4">Loading...</td></tr>
+                                            <tr>
+                                                <td colspan="3" class="text-center py-4">Loading...</td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -455,10 +547,13 @@
                     </div>
                     <div class="col-lg-4">
                         <div class="card">
-                            <div class="card-header"><h5>Quick Insights</h5></div>
+                            <div class="card-header">
+                                <h5>Quick Insights</h5>
+                            </div>
                             <div class="card-body">
                                 <div class="p-3 bg-light rounded-3 mb-3">
-                                    <small class="text-muted d-block text-uppercase fw-bold mb-1">Most Active Member</small>
+                                    <small class="text-muted d-block text-uppercase fw-bold mb-1">Most Active
+                                        Member</small>
                                     <h5 class="fw-bold mb-0" id="stat-most-scanned">---</h5>
                                 </div>
                                 <div class="p-3 bg-light rounded-3">
@@ -506,7 +601,7 @@
                         <i class="bi bi-plus-lg me-2"></i> New Organization
                     </button>
                 </div>
-                
+
                 <div class="row" id="orgs-container">
                     <!-- Orgs will be loaded here -->
                 </div>
@@ -547,14 +642,19 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="card h-100">
-                            <div class="card-header"><h5>Operation Mode</h5></div>
+                            <div class="card-header">
+                                <h5>Operation Mode</h5>
+                            </div>
                             <div class="card-body">
-                                <p class="text-muted small">Authentication mode validates cards. Registration mode captures new cards for onboarding.</p>
+                                <p class="text-muted small">Authentication mode validates cards. Registration mode
+                                    captures new cards for onboarding.</p>
                                 <div class="btn-group w-100 mt-2">
-                                    <input type="radio" class="btn-check" name="sys_mode" id="mode_auth" onclick="setMode('auth_mod')">
+                                    <input type="radio" class="btn-check" name="sys_mode" id="mode_auth"
+                                        onclick="setMode('auth_mod')">
                                     <label class="btn btn-outline-primary" for="mode_auth">Authentication Mode</label>
-                                    
-                                    <input type="radio" class="btn-check" name="sys_mode" id="mode_reg" onclick="setMode('reg_mod')">
+
+                                    <input type="radio" class="btn-check" name="sys_mode" id="mode_reg"
+                                        onclick="setMode('reg_mod')">
                                     <label class="btn btn-outline-warning" for="mode_reg">Registration Mode</label>
                                 </div>
                             </div>
@@ -562,7 +662,9 @@
                     </div>
                     <div class="col-md-6">
                         <div class="card h-100">
-                            <div class="card-header"><h5>Security Constraints</h5></div>
+                            <div class="card-header">
+                                <h5>Security Constraints</h5>
+                            </div>
                             <div class="card-body">
                                 <div class="mb-3">
                                     <label class="form-label small fw-bold">Daily Access Quota (0 = Unlimited)</label>
@@ -572,7 +674,8 @@
                                     <label class="form-label small fw-bold">Auto-Freeze Fail Threshold</label>
                                     <input type="number" id="set_max_failed" class="form-control">
                                 </div>
-                                <button class="btn btn-primary w-100 btn-rounded" onclick="saveAdvancedSettings()">Apply Rules</button>
+                                <button class="btn btn-primary w-100 btn-rounded" onclick="saveAdvancedSettings()">Apply
+                                    Rules</button>
                             </div>
                         </div>
                     </div>
@@ -584,176 +687,194 @@
 
     <!-- Registration Wizard Modal -->
     <div class="modal fade" id="wizardModal" data-bs-backdrop="static" tabindex="-1">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content border-0 shadow-lg">
-          <div class="modal-header bg-light border-0">
-            <h5 class="modal-title fw-bold">Onboarding Wizard</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="stopScanPolling()"></button>
-          </div>
-          <div class="modal-body p-4">
-            <!-- Progress Bar -->
-            <div class="wizard-steps">
-                <div class="step-item active" id="step-1-indicator">
-                    <div class="step-circle">1</div>
-                    <div class="step-label">Basic Info</div>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-light border-0">
+                    <h5 class="modal-title fw-bold">Onboarding Wizard</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        onclick="stopScanPolling()"></button>
                 </div>
-                <div class="step-item" id="step-2-indicator">
-                    <div class="step-circle">2</div>
-                    <div class="step-label">Organization</div>
+                <div class="modal-body p-4">
+                    <!-- Progress Bar -->
+                    <div class="wizard-steps">
+                        <div class="step-item active" id="step-1-indicator">
+                            <div class="step-circle">1</div>
+                            <div class="step-label">Basic Info</div>
+                        </div>
+                        <div class="step-item" id="step-2-indicator">
+                            <div class="step-circle">2</div>
+                            <div class="step-label">Organization</div>
+                        </div>
+                        <div class="step-item" id="step-3-indicator">
+                            <div class="step-circle">3</div>
+                            <div class="step-label">RFID Scan</div>
+                        </div>
+                        <div class="step-item" id="step-4-indicator">
+                            <div class="step-circle">4</div>
+                            <div class="step-label">Confirm</div>
+                        </div>
+                    </div>
+
+                    <form id="wizardForm">
+                        <!-- Step 1: Basic Info -->
+                        <div class="wizard-pane active" id="pane-1">
+                            <h6 class="fw-bold mb-3">Step 1: Personal Details</h6>
+                            <div class="row g-3">
+                                <div class="col-md-12">
+                                    <label class="form-label small fw-bold">Full Name *</label>
+                                    <input type="text" id="wiz_name" class="form-control" required
+                                        placeholder="Enter full name">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold">Email Address</label>
+                                    <input type="email" id="wiz_email" class="form-control"
+                                        placeholder="name@example.com">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold">Phone Number</label>
+                                    <input type="tel" id="wiz_phone" class="form-control" placeholder="+1234567890">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold">Gender</label>
+                                    <select id="wiz_gender" class="form-select">
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                        <option value="other">Other</option>
+                                        <option value="prefer_not_to_say">Prefer not to say</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold">Profile Photo (Optional)</label>
+                                    <input type="file" id="wiz_photo" class="form-control" accept="image/*">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Organization Details -->
+                        <div class="wizard-pane" id="pane-2">
+                            <h6 class="fw-bold mb-3">Step 2: Organizational Hierarchy</h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold">Organization *</label>
+                                    <select id="wiz_org" class="form-select" onchange="loadDeptOptions(this.value)"
+                                        required>
+                                        <option value="">Select Organization</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold">Department *</label>
+                                    <select id="wiz_dept" class="form-select" onchange="loadSectionOptions(this.value)"
+                                        required disabled>
+                                        <option value="">Select Department</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold">Section / Unit</label>
+                                    <select id="wiz_sect" class="form-select" disabled>
+                                        <option value="">Select Section</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold">Member ID / ID Card #</label>
+                                    <input type="text" id="wiz_member_id" class="form-control" placeholder="ID-001">
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="form-label small fw-bold">Role / Position</label>
+                                    <input type="text" id="wiz_role" class="form-control"
+                                        placeholder="e.g. Manager, Student, Doctor">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: RFID Scan -->
+                        <div class="wizard-pane" id="pane-3">
+                            <h6 class="fw-bold mb-3">Step 3: Card Enrollment</h6>
+                            <div class="scan-animation">
+                                <svg class="rfid-svg pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.5">
+                                    <rect x="2" y="5" width="20" height="14" rx="2" stroke="var(--primary)"></rect>
+                                    <path d="M7 10h10M7 14h5" stroke="var(--primary)"></path>
+                                    <circle cx="17" cy="14" r="2" fill="var(--primary)"></circle>
+                                </svg>
+                                <h5 class="fw-bold text-primary">Scan Card Now</h5>
+                                <p class="text-muted small">Please scan the RFID card on the connected device...</p>
+
+                                <div class="mt-4">
+                                    <label class="form-label small fw-bold">Capture from Device:</label>
+                                    <div class="input-group w-75 mx-auto">
+                                        <select id="wiz_device" class="form-select" onchange="startScanPolling()">
+                                            <option value="">Select Capture Device</option>
+                                        </select>
+                                        <button class="btn btn-outline-primary" type="button"
+                                            onclick="loadDevicesForWizard()">
+                                            <i class="bi bi-arrow-clockwise"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4 w-75 mx-auto">
+                                    <label class="form-label small fw-bold">Enrolled Card UID:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i
+                                                class="bi bi-credit-card-2-front"></i></span>
+                                        <input type="text" id="wiz_card_uid_input" class="form-control font-monospace"
+                                            placeholder="Wait for scan or type manually..."
+                                            oninput="capturedUid = this.value">
+                                    </div>
+                                </div>
+
+                                <div id="scan-status" class="mt-3">
+                                    <div class="spinner-border spinner-border-sm text-primary me-2"></div>
+                                    <span class="text-primary fw-600" id="scan-status-text">Waiting for device
+                                        selection...</span>
+                                </div>
+
+                                <div id="scan-success" class="mt-3 d-none">
+                                    <div class="alert alert-success d-flex align-items-center justify-content-between">
+                                        <div class="d-flex align-items-center">
+                                            <i class="bi bi-check-circle-fill me-2"></i>
+                                            <span>Card Detected: <strong id="detected_uid"
+                                                    class="font-monospace">---</strong></span>
+                                        </div>
+                                        <button type="button" class="btn btn-sm btn-outline-danger"
+                                            onclick="clearCapturedScan()">
+                                            <i class="bi bi-x-circle"></i> Clear
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Confirm -->
+                        <div class="wizard-pane" id="pane-4">
+                            <h6 class="fw-bold mb-3">Step 4: Review & Finalize</h6>
+                            <div class="bg-light p-3 rounded-3 mb-3">
+                                <div class="row g-2">
+                                    <div class="col-6 small text-muted text-uppercase fw-bold">Full Name:</div>
+                                    <div class="col-6 small fw-bold" id="rev_name">---</div>
+                                    <div class="col-6 small text-muted text-uppercase fw-bold">Organization:</div>
+                                    <div class="col-6 small fw-bold" id="rev_org">---</div>
+                                    <div class="col-6 small text-muted text-uppercase fw-bold">ID / Card UID:</div>
+                                    <div class="col-6 small fw-bold" id="rev_card">---</div>
+                                </div>
+                            </div>
+                            <div class="alert alert-info py-2 small">
+                                <i class="bi bi-info-circle me-2"></i> After saving, this member will have immediate
+                                access permissions.
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <div class="step-item" id="step-3-indicator">
-                    <div class="step-circle">3</div>
-                    <div class="step-label">RFID Scan</div>
-                </div>
-                <div class="step-item" id="step-4-indicator">
-                    <div class="step-circle">4</div>
-                    <div class="step-label">Confirm</div>
+                <div class="modal-footer border-0 bg-light">
+                    <button type="button" class="btn btn-link text-muted text-decoration-none" id="btn-prev"
+                        onclick="moveWizard(-1)">Previous</button>
+                    <button type="button" class="btn btn-primary px-4 btn-rounded" id="btn-next"
+                        onclick="moveWizard(1)">Next Step</button>
+                    <button type="button" class="btn btn-success px-4 btn-rounded d-none" id="btn-save"
+                        onclick="finalizeRegistration()">Confirm & Save</button>
                 </div>
             </div>
-
-            <form id="wizardForm">
-                <!-- Step 1: Basic Info -->
-                <div class="wizard-pane active" id="pane-1">
-                    <h6 class="fw-bold mb-3">Step 1: Personal Details</h6>
-                    <div class="row g-3">
-                        <div class="col-md-12">
-                            <label class="form-label small fw-bold">Full Name *</label>
-                            <input type="text" id="wiz_name" class="form-control" required placeholder="Enter full name">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label small fw-bold">Email Address</label>
-                            <input type="email" id="wiz_email" class="form-control" placeholder="name@example.com">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label small fw-bold">Phone Number</label>
-                            <input type="tel" id="wiz_phone" class="form-control" placeholder="+1234567890">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label small fw-bold">Gender</label>
-                            <select id="wiz_gender" class="form-select">
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                                <option value="other">Other</option>
-                                <option value="prefer_not_to_say">Prefer not to say</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label small fw-bold">Profile Photo (Optional)</label>
-                            <input type="file" id="wiz_photo" class="form-control" accept="image/*">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Step 2: Organization Details -->
-                <div class="wizard-pane" id="pane-2">
-                    <h6 class="fw-bold mb-3">Step 2: Organizational Hierarchy</h6>
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label small fw-bold">Organization *</label>
-                            <select id="wiz_org" class="form-select" onchange="loadDeptOptions(this.value)" required>
-                                <option value="">Select Organization</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label small fw-bold">Department *</label>
-                            <select id="wiz_dept" class="form-select" onchange="loadSectionOptions(this.value)" required disabled>
-                                <option value="">Select Department</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label small fw-bold">Section / Unit</label>
-                            <select id="wiz_sect" class="form-select" disabled>
-                                <option value="">Select Section</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label small fw-bold">Member ID / ID Card #</label>
-                            <input type="text" id="wiz_member_id" class="form-control" placeholder="ID-001">
-                        </div>
-                        <div class="col-md-12">
-                            <label class="form-label small fw-bold">Role / Position</label>
-                            <input type="text" id="wiz_role" class="form-control" placeholder="e.g. Manager, Student, Doctor">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Step 3: RFID Scan -->
-                <div class="wizard-pane" id="pane-3">
-                    <h6 class="fw-bold mb-3">Step 3: Card Enrollment</h6>
-                    <div class="scan-animation">
-                        <svg class="rfid-svg pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <rect x="2" y="5" width="20" height="14" rx="2" stroke="var(--primary)"></rect>
-                            <path d="M7 10h10M7 14h5" stroke="var(--primary)"></path>
-                            <circle cx="17" cy="14" r="2" fill="var(--primary)"></circle>
-                        </svg>
-                        <h5 class="fw-bold text-primary">Scan Card Now</h5>
-                        <p class="text-muted small">Please scan the RFID card on the connected device...</p>
-                        
-                        <div class="mt-4">
-                            <label class="form-label small fw-bold">Capture from Device:</label>
-                            <div class="input-group w-75 mx-auto">
-                                <select id="wiz_device" class="form-select" onchange="startScanPolling()">
-                                    <option value="">Select Capture Device</option>
-                                </select>
-                                <button class="btn btn-outline-primary" type="button" onclick="loadDevicesForWizard()">
-                                    <i class="bi bi-arrow-clockwise"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="mt-4 w-75 mx-auto">
-                            <label class="form-label small fw-bold">Enrolled Card UID:</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light"><i class="bi bi-credit-card-2-front"></i></span>
-                                <input type="text" id="wiz_card_uid_input" class="form-control font-monospace" placeholder="Wait for scan or type manually..." oninput="capturedUid = this.value">
-                            </div>
-                        </div>
-
-                        <div id="scan-status" class="mt-3">
-                            <div class="spinner-border spinner-border-sm text-primary me-2"></div>
-                            <span class="text-primary fw-600" id="scan-status-text">Waiting for device selection...</span>
-                        </div>
-                        
-                        <div id="scan-success" class="mt-3 d-none">
-                            <div class="alert alert-success d-flex align-items-center justify-content-between">
-                                <div class="d-flex align-items-center">
-                                    <i class="bi bi-check-circle-fill me-2"></i>
-                                    <span>Card Detected: <strong id="detected_uid" class="font-monospace">---</strong></span>
-                                </div>
-                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="clearCapturedScan()">
-                                    <i class="bi bi-x-circle"></i> Clear
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Step 4: Confirm -->
-                <div class="wizard-pane" id="pane-4">
-                    <h6 class="fw-bold mb-3">Step 4: Review & Finalize</h6>
-                    <div class="bg-light p-3 rounded-3 mb-3">
-                        <div class="row g-2">
-                            <div class="col-6 small text-muted text-uppercase fw-bold">Full Name:</div>
-                            <div class="col-6 small fw-bold" id="rev_name">---</div>
-                            <div class="col-6 small text-muted text-uppercase fw-bold">Organization:</div>
-                            <div class="col-6 small fw-bold" id="rev_org">---</div>
-                            <div class="col-6 small text-muted text-uppercase fw-bold">ID / Card UID:</div>
-                            <div class="col-6 small fw-bold" id="rev_card">---</div>
-                        </div>
-                    </div>
-                    <div class="alert alert-info py-2 small">
-                        <i class="bi bi-info-circle me-2"></i> After saving, this member will have immediate access permissions.
-                    </div>
-                </div>
-            </form>
-          </div>
-          <div class="modal-footer border-0 bg-light">
-            <button type="button" class="btn btn-link text-muted text-decoration-none" id="btn-prev" onclick="moveWizard(-1)">Previous</button>
-            <button type="button" class="btn btn-primary px-4 btn-rounded" id="btn-next" onclick="moveWizard(1)">Next Step</button>
-            <button type="button" class="btn btn-success px-4 btn-rounded d-none" id="btn-save" onclick="finalizeRegistration()">Confirm & Save</button>
-          </div>
         </div>
-      </div>
     </div>
 
     <!-- Modals for Management -->
@@ -761,11 +882,14 @@
     <div class="modal fade" id="addOrgModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header"><h5>Add New Organization</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-header">
+                    <h5>Add New Organization</h5><button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
                 <div class="modal-body">
                     <input type="text" id="new_org_name" class="form-control" placeholder="Organization Name">
                 </div>
-                <div class="modal-footer"><button class="btn btn-primary btn-rounded w-100" onclick="addOrg()">Create Organization</button></div>
+                <div class="modal-footer"><button class="btn btn-primary btn-rounded w-100" onclick="addOrg()">Create
+                        Organization</button></div>
             </div>
         </div>
     </div>
@@ -774,12 +898,15 @@
     <div class="modal fade" id="addDeptModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header"><h5>Add Department</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-header">
+                    <h5>Add Department</h5><button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
                 <div class="modal-body">
                     <input type="hidden" id="dept_org_id">
                     <input type="text" id="new_dept_name" class="form-control" placeholder="Department Name">
                 </div>
-                <div class="modal-footer"><button class="btn btn-primary btn-rounded w-100" onclick="addDept()">Add Department</button></div>
+                <div class="modal-footer"><button class="btn btn-primary btn-rounded w-100" onclick="addDept()">Add
+                        Department</button></div>
             </div>
         </div>
     </div>
@@ -788,12 +915,15 @@
     <div class="modal fade" id="addSectionModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header"><h5>Add Section / Unit</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-header">
+                    <h5>Add Section / Unit</h5><button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
                 <div class="modal-body">
                     <input type="hidden" id="sect_dept_id">
                     <input type="text" id="new_sect_name" class="form-control" placeholder="Section Name">
                 </div>
-                <div class="modal-footer"><button class="btn btn-primary btn-rounded w-100" onclick="addSection()">Add Section</button></div>
+                <div class="modal-footer"><button class="btn btn-primary btn-rounded w-100" onclick="addSection()">Add
+                        Section</button></div>
             </div>
         </div>
     </div>
@@ -802,14 +932,22 @@
     <div class="modal fade" id="editDeviceModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header"><h5>Configure Device</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-header">
+                    <h5>Configure Device</h5><button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
                 <div class="modal-body">
                     <input type="hidden" id="edit_dev_id">
-                    <div class="mb-3"><label class="form-label small fw-bold">Device Name</label><input type="text" id="edit_dev_name" class="form-control"></div>
-                    <div class="mb-3"><label class="form-label small fw-bold">Assignment</label><select id="edit_dev_org" class="form-select"><option value="">Unassigned</option></select></div>
-                    <div class="mb-3"><label class="form-label small fw-bold">Location</label><input type="text" id="edit_dev_loc" class="form-control"></div>
+                    <div class="mb-3"><label class="form-label small fw-bold">Device Name</label><input type="text"
+                            id="edit_dev_name" class="form-control"></div>
+                    <div class="mb-3"><label class="form-label small fw-bold">Assignment</label><select
+                            id="edit_dev_org" class="form-select">
+                            <option value="">Unassigned</option>
+                        </select></div>
+                    <div class="mb-3"><label class="form-label small fw-bold">Location</label><input type="text"
+                            id="edit_dev_loc" class="form-control"></div>
                 </div>
-                <div class="modal-footer"><button class="btn btn-primary btn-rounded w-100" onclick="saveDevice()">Update Device</button></div>
+                <div class="modal-footer"><button class="btn btn-primary btn-rounded w-100"
+                        onclick="saveDevice()">Update Device</button></div>
             </div>
         </div>
     </div>
@@ -818,10 +956,13 @@
     <div class="modal fade" id="userLimitsModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header"><h5>Configure User Limits</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-header">
+                    <h5>Configure User Limits</h5><button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
                 <div class="modal-body">
                     <input type="hidden" id="limit_user_id">
-                    <p class="small text-muted mb-3">Set individual limits for this user. Set to <b>0</b> to follow system default.</p>
+                    <p class="small text-muted mb-3">Set individual limits for this user. Set to <b>0</b> to follow
+                        system default.</p>
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Max Access Per Day</label>
                         <input type="number" id="user_max_access" class="form-control" placeholder="0 = System Default">
@@ -831,7 +972,8 @@
                         <input type="number" id="user_max_failed" class="form-control" placeholder="0 = System Default">
                     </div>
                 </div>
-                <div class="modal-footer"><button class="btn btn-primary btn-rounded w-100" onclick="saveUserLimits()">Apply User Limits</button></div>
+                <div class="modal-footer"><button class="btn btn-primary btn-rounded w-100"
+                        onclick="saveUserLimits()">Apply User Limits</button></div>
             </div>
         </div>
     </div>
@@ -852,7 +994,7 @@
         let statusChart = null;
         let autoRefreshInterval = null;
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             switchView('dashboard');
             loadOrgsForWizard();
         });
@@ -878,22 +1020,22 @@
             $('#current-view-title').text(titles[viewId]);
 
             // Clear any existing refresh interval
-            if(autoRefreshInterval) clearInterval(autoRefreshInterval);
+            if (autoRefreshInterval) clearInterval(autoRefreshInterval);
 
             // Initial load
-            if(viewId === 'dashboard') { loadStats(); loadRecentLogs(); initCharts(); }
-            if(viewId === 'users') loadUsers();
-            if(viewId === 'orgs') loadOrgs();
-            if(viewId === 'devices') loadDevices();
-            if(viewId === 'logs') loadLogs();
-            if(viewId === 'settings') loadSettings();
+            if (viewId === 'dashboard') { loadStats(); loadRecentLogs(); initCharts(); }
+            if (viewId === 'users') loadUsers();
+            if (viewId === 'orgs') loadOrgs();
+            if (viewId === 'devices') loadDevices();
+            if (viewId === 'logs') loadLogs();
+            if (viewId === 'settings') loadSettings();
 
             // Set auto-refresh for dynamic views (every 5s, lightweight updates only)
-            if(['dashboard', 'logs', 'devices'].includes(viewId)) {
+            if (['dashboard', 'logs', 'devices'].includes(viewId)) {
                 autoRefreshInterval = setInterval(() => {
-                    if(viewId === 'dashboard') { loadStats(); updateCharts(); loadRecentLogs(); }
-                    if(viewId === 'logs') refreshLogs();
-                    if(viewId === 'devices') refreshDeviceStatus();
+                    if (viewId === 'dashboard') { loadStats(); updateCharts(); loadRecentLogs(); }
+                    if (viewId === 'logs') refreshLogs();
+                    if (viewId === 'devices') refreshDeviceStatus();
                 }, 5000);
             }
         }
@@ -913,7 +1055,7 @@
         function loadRecentLogs() {
             fetch(apiUrl + '?action=get_recent_logs').then(r => r.json()).then(logs => {
                 let h = '';
-                if(logs.length === 0) h = '<tr><td colspan="3" class="text-center py-4 text-muted">No activity recorded</td></tr>';
+                if (logs.length === 0) h = '<tr><td colspan="3" class="text-center py-4 text-muted">No activity recorded</td></tr>';
                 logs.forEach(l => {
                     let c = l.action.includes('Granted') ? 'text-success' : 'text-danger';
                     h += `<tr>
@@ -929,7 +1071,7 @@
         function initCharts() {
             fetch(apiUrl + '?action=get_chart_data').then(r => r.json()).then(d => {
                 const ctx = document.getElementById('accessChart').getContext('2d');
-                if(accessChart) accessChart.destroy();
+                if (accessChart) accessChart.destroy();
                 accessChart = new Chart(ctx, {
                     type: 'line',
                     data: {
@@ -945,7 +1087,7 @@
 
             fetch(apiUrl + '?action=get_stats').then(r => r.json()).then(d => {
                 const ctx = document.getElementById('statusChart').getContext('2d');
-                if(statusChart) statusChart.destroy();
+                if (statusChart) statusChart.destroy();
                 statusChart = new Chart(ctx, {
                     type: 'doughnut',
                     data: {
@@ -958,7 +1100,7 @@
         }
 
         function updateCharts() {
-            if(!accessChart || !statusChart) { initCharts(); return; }
+            if (!accessChart || !statusChart) { initCharts(); return; }
             fetch(apiUrl + '?action=get_chart_data').then(r => r.json()).then(d => {
                 accessChart.data.labels = d.labels;
                 accessChart.data.datasets[0].data = d.granted;
@@ -978,12 +1120,12 @@
                 let h = '';
                 users.forEach(u => {
                     let b = u.status === 'active' ? '<span class="badge-active">Active</span>' : '<span class="badge-frozen">Frozen</span>';
-                    let act = u.status === 'active' ? 
+                    let act = u.status === 'active' ?
                         `<button class="btn btn-sm btn-light border" onclick="freezeUser(${u.id})" title="Freeze"><i class="bi bi-pause text-warning"></i></button>` :
                         `<button class="btn btn-sm btn-light border" onclick="unfreezeUser(${u.id})" title="Unfreeze"><i class="bi bi-play text-success"></i></button>`;
-                    
+
                     let photoUrl = u.photo_path ? u.photo_path : `https://ui-avatars.com/api/?name=${u.full_name}&background=random`;
-                    
+
                     h += `<tr>
                         <td>
                             <div class="d-flex align-items-center">
@@ -1034,7 +1176,7 @@
         function loadDepts(orgId) {
             fetch(apiUrl + `?action=get_depts&org_id=${orgId}`).then(r => r.json()).then(depts => {
                 let h = '<ul class="list-group list-group-flush">';
-                if(depts.length === 0) h += '<li class="list-group-item text-muted small">No departments</li>';
+                if (depts.length === 0) h += '<li class="list-group-item text-muted small">No departments</li>';
                 depts.forEach(d => {
                     h += `<li class="list-group-item d-flex justify-content-between align-items-center py-2 border-0">
                         <span class="small fw-600"><i class="bi bi-diagram-2 me-2"></i> ${d.name}</span>
@@ -1089,18 +1231,18 @@
         // Lightweight refresh: only updates status badges and last-seen, no DOM rebuild
         function refreshDeviceStatus() {
             fetch(apiUrl + '?action=get_devices').then(r => r.json()).then(devices => {
-                if($('#devices-container').children().length === 0 || $('#devices-container').children().length !== devices.length) {
+                if ($('#devices-container').children().length === 0 || $('#devices-container').children().length !== devices.length) {
                     loadDevices(); // Full rebuild only if device count changed
                     return;
                 }
                 devices.forEach(d => {
                     let card = $(`[data-device-uid="${d.device_uid}"]`);
-                    if(card.length) {
+                    if (card.length) {
                         let badge = card.find('.device-status');
                         let isOnline = d.status === 'online';
                         badge.removeClass('badge-online badge-offline')
-                             .addClass(isOnline ? 'badge-online' : 'badge-offline')
-                             .text(isOnline ? 'ONLINE' : 'OFFLINE');
+                            .addClass(isOnline ? 'badge-online' : 'badge-offline')
+                            .text(isOnline ? 'ONLINE' : 'OFFLINE');
                         card.find('.device-lastseen').text('Last seen: ' + (d.last_seen || 'Never'));
                     }
                 });
@@ -1173,7 +1315,7 @@
         }
 
         function loadDeptOptions(orgId) {
-            if(!orgId) { $('#wiz_dept').prop('disabled', true).html('<option value="">Select Department</option>'); return; }
+            if (!orgId) { $('#wiz_dept').prop('disabled', true).html('<option value="">Select Department</option>'); return; }
             fetch(apiUrl + `?action=get_depts&org_id=${orgId}`).then(r => r.json()).then(depts => {
                 let h = '<option value="">Select Department</option>';
                 depts.forEach(d => h += `<option value="${d.id}">${d.name}</option>`);
@@ -1182,7 +1324,7 @@
         }
 
         function loadSectionOptions(deptId) {
-            if(!deptId) { $('#wiz_sect').prop('disabled', true).html('<option value="">Select Section</option>'); return; }
+            if (!deptId) { $('#wiz_sect').prop('disabled', true).html('<option value="">Select Section</option>'); return; }
             fetch(apiUrl + `?action=get_sections&dept_id=${deptId}`).then(r => r.json()).then(sects => {
                 let h = '<option value="">Select Section</option>';
                 sects.forEach(s => h += `<option value="${s.id}">${s.name}</option>`);
@@ -1203,20 +1345,20 @@
         }
 
         function moveWizard(dir) {
-            if(dir === 1) {
-                if(currentStep === 1 && !$('#wiz_name').val()) { alert('Name is required'); return; }
-                if(currentStep === 2 && !$('#wiz_org').val()) { alert('Organization is required'); return; }
-                if(currentStep === 3 && !capturedUid) { alert('Please scan a card first'); return; }
+            if (dir === 1) {
+                if (currentStep === 1 && !$('#wiz_name').val()) { alert('Name is required'); return; }
+                if (currentStep === 2 && !$('#wiz_org').val()) { alert('Organization is required'); return; }
+                if (currentStep === 3 && !capturedUid) { alert('Please scan a card first'); return; }
             }
 
             currentStep += dir;
-            if(currentStep === 3) {
+            if (currentStep === 3) {
                 $('#wiz_card_uid_input').val(capturedUid || '');
                 startScanPolling();
             }
             else stopScanPolling();
 
-            if(currentStep === 4) {
+            if (currentStep === 4) {
                 $('#rev_name').text($('#wiz_name').val());
                 $('#rev_org').text($('#wiz_org option:selected').text());
                 $('#rev_card').text(capturedUid || 'NOT SCANNED');
@@ -1229,7 +1371,7 @@
             $('.wizard-pane').removeClass('active');
             $(`#pane-${currentStep}`).addClass('active');
             $('.step-item').removeClass('active completed');
-            for(let i=1; i<currentStep; i++) $(`#step-${i}-indicator`).addClass('completed');
+            for (let i = 1; i < currentStep; i++) $(`#step-${i}-indicator`).addClass('completed');
             $(`#step-${currentStep}-indicator`).addClass('active');
 
             $('#btn-prev').toggleClass('d-none', currentStep === 1);
@@ -1239,16 +1381,16 @@
 
         function startScanPolling() {
             const devUid = $('#wiz_device').val();
-            if(!devUid) { 
+            if (!devUid) {
                 $('#scan-status').html('<span class="text-danger">Please select a device to start listening...</span>');
                 return;
             }
-            $('#scan-status').html('<div class="spinner-border spinner-border-sm text-primary me-2"></div><span class="text-primary fw-600">Waiting for live signal from '+devUid+'...</span>');
-            
-            if(scanInterval) clearInterval(scanInterval);
+            $('#scan-status').html('<div class="spinner-border spinner-border-sm text-primary me-2"></div><span class="text-primary fw-600">Waiting for live signal from ' + devUid + '...</span>');
+
+            if (scanInterval) clearInterval(scanInterval);
             scanInterval = setInterval(() => {
                 fetch(`api/check_scan.php?deviceID=${devUid}`).then(r => r.json()).then(d => {
-                    if(d.success) {
+                    if (d.success) {
                         capturedUid = d.uid;
                         $('#wiz_card_uid_input').val(capturedUid);
                         $('#detected_uid').text(capturedUid);
@@ -1261,7 +1403,7 @@
         }
 
         function stopScanPolling() {
-            if(scanInterval) clearInterval(scanInterval);
+            if (scanInterval) clearInterval(scanInterval);
             scanInterval = null;
         }
 
@@ -1275,9 +1417,6 @@
         }
 
         function finalizeRegistration() {
-            // Clear any previous error
-            $('#wizard-error').remove();
-
             let formData = new FormData();
             formData.append('action', 'save_user_wizard');
             formData.append('full_name', $('#wiz_name').val());
@@ -1290,32 +1429,25 @@
             formData.append('role', $('#wiz_role').val());
             formData.append('member_id', $('#wiz_member_id').val());
             formData.append('card_uid', capturedUid);
-            
+
             let photoFile = $('#wiz_photo')[0].files[0];
             if (photoFile) {
                 formData.append('photo', photoFile);
             }
 
             fetch(apiUrl, { method: 'POST', body: formData }).then(r => r.json()).then(d => {
-                if(d.success) {
+                if (d.success) {
                     $('#wizardModal').modal('hide');
                     switchView('users');
-                    setMode('auth_mod');
-                } else {
-                    // Show error inside the wizard modal
-                    let errHtml = `<div id="wizard-error" class="alert alert-danger d-flex align-items-center mt-3" role="alert">
-                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                        <div>${d.error}</div>
-                    </div>`;
-                    $('#pane-4').append(errHtml);
-                }
+                    setMode('auth_mod'); // Switch back to auth mode
+                } else alert('Error: ' + d.error);
             });
         }
 
         // --- Settings & Mode ---
         function setMode(m) {
-            fetch(apiUrl, { method: 'POST', body: JSON.stringify({action:'set_mode', mode:m}) }).then(r => r.json()).then(d => {
-                if(d.success) console.log('System mode: ' + m);
+            fetch(apiUrl, { method: 'POST', body: JSON.stringify({ action: 'set_mode', mode: m }) }).then(r => r.json()).then(d => {
+                if (d.success) console.log('System mode: ' + m);
             });
         }
 
@@ -1323,21 +1455,21 @@
             fetch(apiUrl + '?action=get_settings').then(r => r.json()).then(s => {
                 $('#set_max_access').val(s.max_access_per_day);
                 $('#set_max_failed').val(s.max_failed_attempts);
-                if(s.system_mode === 'auth_mod') $('#mode_auth').prop('checked', true);
+                if (s.system_mode === 'auth_mod') $('#mode_auth').prop('checked', true);
                 else $('#mode_reg').prop('checked', true);
             });
         }
 
         function saveAdvancedSettings() {
             let data = { action: 'save_advanced_settings', max_access_per_day: $('#set_max_access').val(), max_failed_attempts: $('#set_max_failed').val() };
-            fetch(apiUrl, { method: 'POST', body: JSON.stringify(data) }).then(r => r.json()).then(d => { if(d.success) alert('Settings saved.'); });
+            fetch(apiUrl, { method: 'POST', body: JSON.stringify(data) }).then(r => r.json()).then(d => { if (d.success) alert('Settings saved.'); });
         }
 
         // --- Management Helpers ---
         function addOrg() {
             let name = $('#new_org_name').val();
-            if(!name) return;
-            fetch(apiUrl, { method: 'POST', body: JSON.stringify({action:'add_org', name:name}) }).then(r => r.json()).then(d => {
+            if (!name) return;
+            fetch(apiUrl, { method: 'POST', body: JSON.stringify({ action: 'add_org', name: name }) }).then(r => r.json()).then(d => {
                 $('#addOrgModal').modal('hide'); $('#new_org_name').val(''); loadOrgs(); loadOrgsForWizard();
             });
         }
@@ -1346,7 +1478,7 @@
         function addDept() {
             let name = $('#new_dept_name').val();
             let orgId = $('#dept_org_id').val();
-            fetch(apiUrl, { method: 'POST', body: JSON.stringify({action:'add_dept', name:name, org_id:orgId}) }).then(r => r.json()).then(d => {
+            fetch(apiUrl, { method: 'POST', body: JSON.stringify({ action: 'add_dept', name: name, org_id: orgId }) }).then(r => r.json()).then(d => {
                 $('#addDeptModal').modal('hide'); $('#new_dept_name').val(''); loadDepts(orgId);
             });
         }
@@ -1355,7 +1487,7 @@
         function addSection() {
             let name = $('#new_sect_name').val();
             let deptId = $('#sect_dept_id').val();
-            fetch(apiUrl, { method: 'POST', body: JSON.stringify({action:'add_section', name:name, dept_id:deptId}) }).then(r => r.json()).then(d => {
+            fetch(apiUrl, { method: 'POST', body: JSON.stringify({ action: 'add_section', name: name, dept_id: deptId }) }).then(r => r.json()).then(d => {
                 $('#addSectionModal').modal('hide'); $('#new_sect_name').val(''); loadSections(deptId);
             });
         }
@@ -1381,9 +1513,9 @@
             });
         }
 
-        function freezeUser(id) { fetch(apiUrl, { method: 'POST', body: JSON.stringify({action:'freeze_user', id:id}) }).then(r => r.json()).then(d => loadUsers()); }
-        function unfreezeUser(id) { fetch(apiUrl, { method: 'POST', body: JSON.stringify({action:'unfreeze_user', id:id}) }).then(r => r.json()).then(d => loadUsers()); }
-        function deleteUser(id) { if(confirm('Delete member?')) fetch(apiUrl, { method: 'POST', body: JSON.stringify({action:'delete_user', id:id}) }).then(r => r.json()).then(d => loadUsers()); }
+        function freezeUser(id) { fetch(apiUrl, { method: 'POST', body: JSON.stringify({ action: 'freeze_user', id: id }) }).then(r => r.json()).then(d => loadUsers()); }
+        function unfreezeUser(id) { fetch(apiUrl, { method: 'POST', body: JSON.stringify({ action: 'unfreeze_user', id: id }) }).then(r => r.json()).then(d => loadUsers()); }
+        function deleteUser(id) { if (confirm('Delete member?')) fetch(apiUrl, { method: 'POST', body: JSON.stringify({ action: 'delete_user', id: id }) }).then(r => r.json()).then(d => loadUsers()); }
 
         function openUserLimits(u) {
             $('#limit_user_id').val(u.id);
@@ -1406,4 +1538,5 @@
 
     </script>
 </body>
+
 </html>

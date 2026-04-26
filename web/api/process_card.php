@@ -50,9 +50,11 @@ if (isset($data['cardID']) && isset($data['mode'])) {
         $max_access = 0;
         $max_failed = 0;
         $res = mysqli_query($conn, "SELECT setting_key, setting_value FROM settings WHERE setting_key IN ('max_access_per_day', 'max_failed_attempts')");
-        while ($row = mysqli_fetch_assoc($res)) {
-            if ($row['setting_key'] == 'max_access_per_day') $max_access = (int)$row['setting_value'];
-            if ($row['setting_key'] == 'max_failed_attempts') $max_failed = (int)$row['setting_value'];
+        if ($res) {
+            while ($row = mysqli_fetch_assoc($res)) {
+                if ($row['setting_key'] == 'max_access_per_day') $max_access = (int)$row['setting_value'];
+                if ($row['setting_key'] == 'max_failed_attempts') $max_failed = (int)$row['setting_value'];
+            }
         }
 
         $query = "SELECT id, status, failed_attempts, max_access_per_day, max_failed_attempts FROM users WHERE card_uid = '$uid'";
