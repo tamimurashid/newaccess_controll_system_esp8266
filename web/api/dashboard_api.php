@@ -33,6 +33,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         }
         echo json_encode($logs);
     }
+    elseif ($action === 'get_recent_logs') {
+        $query = "SELECT l.*, u.full_name as user_name, d.name as device_name 
+                  FROM logs l
+                  LEFT JOIN users u ON l.user_id = u.id
+                  LEFT JOIN devices d ON l.device_id = d.id
+                  ORDER BY l.timestamp DESC LIMIT 5";
+        $result = mysqli_query($conn, $query);
+        $logs = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $logs[] = $row;
+        }
+        echo json_encode($logs);
+    }
     elseif ($action === 'get_settings') {
         $query = "SELECT setting_key, setting_value FROM settings";
         $result = mysqli_query($conn, $query);
@@ -43,7 +56,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         echo json_encode($settings);
     }
     elseif ($action === 'get_stats') {
-        $stats = ['total_users' => 0, 'active_users' => 0, 'total_logs' => 0, 'entries_today' => 0, 'failed_today' => 0];
+        $stats = [
+            'total_users' => 0, 
+            'active_users' => 0, 
+            'total_logs' => 0, 
+            'entries_today' => 0, 
+            'failed_today' => 0,
+            'total_orgs' => 0,
+            'total_devices' => 0,
+            'most_scanned_user' => 'None'
+        ];
         
         $res = mysqli_query($conn, "SELECT COUNT(*) as c FROM users");
         if ($row = mysqli_fetch_assoc($res)) $stats['total_users'] = $row['c'];
@@ -59,6 +81,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
         $res = mysqli_query($conn, "SELECT COUNT(*) as c FROM logs WHERE action LIKE 'Access Denied%' AND DATE(timestamp) = CURDATE()");
         if ($row = mysqli_fetch_assoc($res)) $stats['failed_today'] = $row['c'];
+
+        $res = mysqli_query($conn, "SELECT COUNT(*) as c FROM organizations");
+        if ($row = mysqli_fetch_assoc($res)) $stats['total_orgs'] = $row['c'];
+
+        $res = mysqli_query($conn, "SELECT COUNT(*) as c FROM devices");
+        if ($row = mysqli_fetch_assoc($res)) $stats['total_devices'] = $row['c'];
+
+        $res = mysqli_query($conn, "SELECT u.full_name, COUNT(l.id) as scan_count 
+                                    FROM logs l 
+                                    JOIN users u ON l.user_id = u.id 
+                                    GROUP BY l.user_id 
+                                    ORDER BY scan_count DESC LIMIT 1");
+        if ($row = mysqli_fetch_assoc($res)) $stats['most_scanned_user'] = $row['full_name'];
         
         echo json_encode($stats);
     }
@@ -173,24 +208,38 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $member_id = mysqli_real_escape_string($conn, $data['member_id']);
         $card_uid = mysqli_real_escape_string($conn, $data['card_uid']);
         
-        $photo_path = null;
-        if (!empty($_FILES['photo']['name'])) {
-            $target_dir = "../uploads/";
-            if (!is_dir($target_dir)) mkdir($target_dir, 0777, true);
-            $file_ext = pathinfo($_FILES["photo"]["name"], PATHINFO_EXTENSION);
-            $file_name = time() . "_" . $card_uid . "." . $file_ext;
-            $photo_path = "uploads/" . $file_name;
-            move_uploaded_file($_FILES["photo"]["tmp_name"], $target_dir . $file_name);
-        }
-
-        $query = "INSERT INTO users (full_name, email, phone, gender, photo_path, organization_id, department_id, section_id, role, member_id, card_uid, status) 
-                  VALUES ('$full_name', '$email', '$phone', '$gender', '$photo_path', $org_id, $dept_id, $sect_id, '$role', '$member_id', '$card_uid', 'active')";
-        
-        if (mysqli_query($conn, $query)) {
-            echo json_encode(['success' => true]);
+        // Check if this card is already registered in the same organization
+        $dup_check = mysqli_query($conn, "SELECT id, full_name FROM users WHERE card_uid = '$card_uid' AND organization_id = $org_id");
+        if ($dup_check && mysqli_num_rows($dup_check) > 0) {
+            $existing = mysqli_fetch_assoc($dup_check);
+            echo json_encode(['success' => false, 'error' => "This card (UID: $card_uid) is already registered to \"{$existing['full_name']}\" in this organization."]);
         } else {
-            echo json_encode(['success' => false, 'error' => mysqli_error($conn)]);
+            $photo_path = null;
+            if (!empty($_FILES['photo']['name'])) {
+                $target_dir = "../uploads/";
+                if (!is_dir($target_dir)) mkdir($target_dir, 0777, true);
+                $file_ext = pathinfo($_FILES["photo"]["name"], PATHINFO_EXTENSION);
+                $file_name = time() . "_" . $card_uid . "." . $file_ext;
+                $photo_path = "uploads/" . $file_name;
+                move_uploaded_file($_FILES["photo"]["tmp_name"], $target_dir . $file_name);
+            }
+
+            $query = "INSERT INTO users (full_name, email, phone, gender, photo_path, organization_id, department_id, section_id, role, member_id, card_uid, status) 
+                      VALUES ('$full_name', '$email', '$phone', '$gender', '$photo_path', $org_id, $dept_id, $sect_id, '$role', '$member_id', '$card_uid', 'active')";
+            
+            if (mysqli_query($conn, $query)) {
+                echo json_encode(['success' => true]);
+            } else {
+                echo json_encode(['success' => false, 'error' => mysqli_error($conn)]);
+            }
         }
+    }
+    elseif ($post_action === 'update_user_limits') {
+        $id = (int)$data['id'];
+        $max_access = (int)$data['max_access_per_day'];
+        $max_failed = (int)$data['max_failed_attempts'];
+        mysqli_query($conn, "UPDATE users SET max_access_per_day = $max_access, max_failed_attempts = $max_failed WHERE id = $id");
+        echo json_encode(['success' => true]);
     }
     elseif ($post_action === 'update_device') {
         $id = (int)$data['id'];

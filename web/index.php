@@ -159,18 +159,22 @@
             background-color: #fff;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             margin-bottom: 25px;
-            transition: transform 0.3s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
         }
 
         .stat-card {
             padding: 25px;
             display: flex;
             align-items: center;
+            transition: transform 0.3s ease;
         }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Prevent layout collapse during AJAX refreshes */
+        #devices-container { min-height: 120px; }
+        #dash-recent-logs tr { height: 42px; }
 
         .stat-icon-wrapper {
             width: 60px;
@@ -218,7 +222,8 @@
         }
 
         .view-section { display: none; }
-        .view-section.active { display: block; animation: slideIn 0.4s ease; }
+        .view-section.active { display: block; }
+        .view-section.active.animate-in { animation: slideIn 0.4s ease; }
 
         @keyframes slideIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -378,35 +383,35 @@
                         <div class="card stat-card">
                             <div class="stat-icon-wrapper bg-gradient-primary"><i class="bi bi-people"></i></div>
                             <div class="stat-details">
-                                <h6>Total Members</h6>
-                                <h3 id="stat-total-users">0</h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="card stat-card">
-                            <div class="stat-icon-wrapper bg-gradient-success"><i class="bi bi-shield-check"></i></div>
-                            <div class="stat-details">
-                                <h6>Entries Today</h6>
-                                <h3 id="stat-entries-today">0</h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="card stat-card">
-                            <div class="stat-icon-wrapper bg-gradient-info"><i class="bi bi-check2-circle"></i></div>
-                            <div class="stat-details">
-                                <h6>Active Status</h6>
+                                <h6>Active Members</h6>
                                 <h3 id="stat-active-users">0</h3>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6">
                         <div class="card stat-card">
-                            <div class="stat-icon-wrapper bg-gradient-danger"><i class="bi bi-shield-slash"></i></div>
+                            <div class="stat-icon-wrapper bg-gradient-success"><i class="bi bi-building"></i></div>
                             <div class="stat-details">
-                                <h6>Failed Today</h6>
-                                <h3 id="stat-failed-today">0</h3>
+                                <h6>Organizations</h6>
+                                <h3 id="stat-total-orgs">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card stat-card">
+                            <div class="stat-icon-wrapper bg-gradient-info"><i class="bi bi-cpu"></i></div>
+                            <div class="stat-details">
+                                <h6>Active Devices</h6>
+                                <h3 id="stat-total-devices">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card stat-card">
+                            <div class="stat-icon-wrapper bg-gradient-danger"><i class="bi bi-shield-check"></i></div>
+                            <div class="stat-details">
+                                <h6>Entries Today</h6>
+                                <h3 id="stat-entries-today">0</h3>
                             </div>
                         </div>
                     </div>
@@ -416,13 +421,51 @@
                     <div class="col-lg-8">
                         <div class="card">
                             <div class="card-header"><h5>Weekly Access Traffic</h5></div>
-                            <div class="card-body"><canvas id="accessChart" height="300"></canvas></div>
+                            <div class="card-body"><canvas id="accessChart" height="250"></canvas></div>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="card">
-                            <div class="card-header"><h5>Member Status Distribution</h5></div>
-                            <div class="card-body"><canvas id="statusChart" height="300"></canvas></div>
+                            <div class="card-header"><h5>Member Status</h5></div>
+                            <div class="card-body"><canvas id="statusChart" height="250"></canvas></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Recent Activity</h5>
+                                <button class="btn btn-sm btn-light border" onclick="switchView('logs')">View All</button>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle mb-0">
+                                        <thead class="table-light">
+                                            <tr><th>Time</th><th>User</th><th>Action</th></tr>
+                                        </thead>
+                                        <tbody id="dash-recent-logs">
+                                            <tr><td colspan="3" class="text-center py-4">Loading...</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-header"><h5>Quick Insights</h5></div>
+                            <div class="card-body">
+                                <div class="p-3 bg-light rounded-3 mb-3">
+                                    <small class="text-muted d-block text-uppercase fw-bold mb-1">Most Active Member</small>
+                                    <h5 class="fw-bold mb-0" id="stat-most-scanned">---</h5>
+                                </div>
+                                <div class="p-3 bg-light rounded-3">
+                                    <small class="text-muted d-block text-uppercase fw-bold mb-1">Failures Today</small>
+                                    <h5 class="fw-bold mb-0 text-danger" id="stat-failed-today">0</h5>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -771,6 +814,28 @@
         </div>
     </div>
 
+    <!-- User Limits Modal -->
+    <div class="modal fade" id="userLimitsModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header"><h5>Configure User Limits</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-body">
+                    <input type="hidden" id="limit_user_id">
+                    <p class="small text-muted mb-3">Set individual limits for this user. Set to <b>0</b> to follow system default.</p>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Max Access Per Day</label>
+                        <input type="number" id="user_max_access" class="form-control" placeholder="0 = System Default">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Max Failed Attempts (Auto-Freeze)</label>
+                        <input type="number" id="user_max_failed" class="form-control" placeholder="0 = System Default">
+                    </div>
+                </div>
+                <div class="modal-footer"><button class="btn btn-primary btn-rounded w-100" onclick="saveUserLimits()">Apply User Limits</button></div>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -793,10 +858,14 @@
         });
 
         function switchView(viewId) {
-            $('.view-section').removeClass('active');
+            $('.view-section').removeClass('active animate-in');
             $('.sidebar-menu a').removeClass('active');
-            $('#view-' + viewId).addClass('active');
+            let viewEl = $('#view-' + viewId);
+            viewEl.addClass('active animate-in');
             $('#nav-' + viewId).addClass('active');
+
+            // Remove animation class after it plays to prevent re-triggering
+            setTimeout(() => viewEl.removeClass('animate-in'), 500);
 
             const titles = {
                 'dashboard': 'Dashboard Overview',
@@ -812,19 +881,19 @@
             if(autoRefreshInterval) clearInterval(autoRefreshInterval);
 
             // Initial load
-            if(viewId === 'dashboard') { loadStats(); initCharts(); }
+            if(viewId === 'dashboard') { loadStats(); loadRecentLogs(); initCharts(); }
             if(viewId === 'users') loadUsers();
             if(viewId === 'orgs') loadOrgs();
             if(viewId === 'devices') loadDevices();
             if(viewId === 'logs') loadLogs();
             if(viewId === 'settings') loadSettings();
 
-            // Set auto-refresh for dynamic views
+            // Set auto-refresh for dynamic views (every 5s, lightweight updates only)
             if(['dashboard', 'logs', 'devices'].includes(viewId)) {
                 autoRefreshInterval = setInterval(() => {
-                    if(viewId === 'dashboard') { loadStats(); updateCharts(); }
+                    if(viewId === 'dashboard') { loadStats(); updateCharts(); loadRecentLogs(); }
                     if(viewId === 'logs') refreshLogs();
-                    if(viewId === 'devices') loadDevices();
+                    if(viewId === 'devices') refreshDeviceStatus();
                 }, 5000);
             }
         }
@@ -832,10 +901,28 @@
         // --- Stats & Charts ---
         function loadStats() {
             fetch(apiUrl + '?action=get_stats').then(r => r.json()).then(d => {
-                $('#stat-total-users').text(d.total_users);
                 $('#stat-active-users').text(d.active_users);
+                $('#stat-total-orgs').text(d.total_orgs);
+                $('#stat-total-devices').text(d.total_devices);
                 $('#stat-entries-today').text(d.entries_today);
                 $('#stat-failed-today').text(d.failed_today);
+                $('#stat-most-scanned').text(d.most_scanned_user || 'None');
+            });
+        }
+
+        function loadRecentLogs() {
+            fetch(apiUrl + '?action=get_recent_logs').then(r => r.json()).then(logs => {
+                let h = '';
+                if(logs.length === 0) h = '<tr><td colspan="3" class="text-center py-4 text-muted">No activity recorded</td></tr>';
+                logs.forEach(l => {
+                    let c = l.action.includes('Granted') ? 'text-success' : 'text-danger';
+                    h += `<tr>
+                        <td><small class="text-muted">${l.timestamp.split(' ')[1]}</small></td>
+                        <td><div class="fw-bold small">${l.user_name || 'Unknown'}</div></td>
+                        <td><span class="small ${c} fw-bold">${l.action}</span></td>
+                    </tr>`;
+                });
+                $('#dash-recent-logs').html(h);
             });
         }
 
@@ -892,8 +979,8 @@
                 users.forEach(u => {
                     let b = u.status === 'active' ? '<span class="badge-active">Active</span>' : '<span class="badge-frozen">Frozen</span>';
                     let act = u.status === 'active' ? 
-                        `<button class="btn btn-sm btn-light border" onclick="freezeUser(${u.id})"><i class="bi bi-pause text-warning"></i></button>` :
-                        `<button class="btn btn-sm btn-light border" onclick="unfreezeUser(${u.id})"><i class="bi bi-play text-success"></i></button>`;
+                        `<button class="btn btn-sm btn-light border" onclick="freezeUser(${u.id})" title="Freeze"><i class="bi bi-pause text-warning"></i></button>` :
+                        `<button class="btn btn-sm btn-light border" onclick="unfreezeUser(${u.id})" title="Unfreeze"><i class="bi bi-play text-success"></i></button>`;
                     
                     let photoUrl = u.photo_path ? u.photo_path : `https://ui-avatars.com/api/?name=${u.full_name}&background=random`;
                     
@@ -911,7 +998,8 @@
                         <td>
                             <div class="btn-group">
                                 ${act}
-                                <button class="btn btn-sm btn-light border" onclick="deleteUser(${u.id})"><i class="bi bi-trash text-danger"></i></button>
+                                <button class="btn btn-sm btn-light border" onclick="openUserLimits(${JSON.stringify(u).replace(/"/g, '&quot;')})" title="Limits"><i class="bi bi-shield-lock text-primary"></i></button>
+                                <button class="btn btn-sm btn-light border" onclick="deleteUser(${u.id})" title="Delete"><i class="bi bi-trash text-danger"></i></button>
                             </div>
                         </td>
                     </tr>`;
@@ -977,23 +1065,45 @@
             fetch(apiUrl + '?action=get_devices').then(r => r.json()).then(devices => {
                 let h = '';
                 devices.forEach(d => {
-                    let s = d.status === 'online' ? '<span class="badge badge-online ms-2 small" style="padding: 2px 8px; border-radius: 10px;">ONLINE</span>' : '<span class="badge badge-offline ms-2 small" style="padding: 2px 8px; border-radius: 10px;">OFFLINE</span>';
+                    let statusClass = d.status === 'online' ? 'badge-online' : 'badge-offline';
+                    let statusText = d.status === 'online' ? 'ONLINE' : 'OFFLINE';
                     h += `<div class="col-md-4 mb-4">
-                        <div class="card stat-card border-top border-4 border-primary">
+                        <div class="card stat-card border-top border-4 border-primary" data-device-uid="${d.device_uid}">
                             <div class="w-100">
                                 <div class="d-flex justify-content-between">
-                                    <h6 class="fw-bold mb-1">${d.name} ${s}</h6>
+                                    <h6 class="fw-bold mb-1">${d.name} <span class="badge ${statusClass} ms-2 small device-status" style="padding: 2px 8px; border-radius: 10px;">${statusText}</span></h6>
                                     <button class="btn btn-sm btn-link p-0" onclick="openEditDevice(${JSON.stringify(d).replace(/"/g, '&quot;')})"><i class="bi bi-pencil-square"></i></button>
                                 </div>
                                 <div class="small text-muted mb-3">UID: <span class="font-monospace">${d.device_uid}</span></div>
                                 <div class="small mb-1"><i class="bi bi-building me-2"></i> Org: <b>${d.org_name || 'Unassigned'}</b></div>
                                 <div class="small mb-2"><i class="bi bi-geo-alt me-2"></i> Loc: <b>${d.location || 'Unknown'}</b></div>
-                                <div class="small text-muted border-top pt-2 mt-2">Last seen: ${d.last_seen || 'Never'}</div>
+                                <div class="small text-muted border-top pt-2 mt-2 device-lastseen">Last seen: ${d.last_seen || 'Never'}</div>
                             </div>
                         </div>
                     </div>`;
                 });
                 $('#devices-container').html(h || '<div class="col-12 text-center text-muted py-5">No devices detected.</div>');
+            });
+        }
+
+        // Lightweight refresh: only updates status badges and last-seen, no DOM rebuild
+        function refreshDeviceStatus() {
+            fetch(apiUrl + '?action=get_devices').then(r => r.json()).then(devices => {
+                if($('#devices-container').children().length === 0 || $('#devices-container').children().length !== devices.length) {
+                    loadDevices(); // Full rebuild only if device count changed
+                    return;
+                }
+                devices.forEach(d => {
+                    let card = $(`[data-device-uid="${d.device_uid}"]`);
+                    if(card.length) {
+                        let badge = card.find('.device-status');
+                        let isOnline = d.status === 'online';
+                        badge.removeClass('badge-online badge-offline')
+                             .addClass(isOnline ? 'badge-online' : 'badge-offline')
+                             .text(isOnline ? 'ONLINE' : 'OFFLINE');
+                        card.find('.device-lastseen').text('Last seen: ' + (d.last_seen || 'Never'));
+                    }
+                });
             });
         }
 
@@ -1009,9 +1119,21 @@
 
         function refreshLogs() {
             fetch(apiUrl + '?action=get_logs').then(r => r.json()).then(logs => {
-                let h = buildLogsHtml(logs);
-                // We only update the body and don't re-init DataTable to avoid jumping
-                $('#logsTableBody').html(h);
+                if (!$.fn.DataTable.isDataTable('#logsTable')) return;
+                let table = $('#logsTable').DataTable();
+                let currentPage = table.page();
+                table.clear();
+                logs.forEach(l => {
+                    let c = l.action.includes('Granted') ? 'text-success fw-bold' : 'text-danger fw-bold';
+                    table.row.add([
+                        `<small>${l.timestamp}</small>`,
+                        l.user_name || '<i class="text-muted">Unknown</i>',
+                        `<small>${l.device_name || 'N/A'}</small>`,
+                        `<span class="${c}">${l.action}</span>`,
+                        `<code class="small">${l.card_uid}</code>`
+                    ]);
+                });
+                table.page(currentPage).draw(false);
             });
         }
 
@@ -1153,6 +1275,9 @@
         }
 
         function finalizeRegistration() {
+            // Clear any previous error
+            $('#wizard-error').remove();
+
             let formData = new FormData();
             formData.append('action', 'save_user_wizard');
             formData.append('full_name', $('#wiz_name').val());
@@ -1175,8 +1300,15 @@
                 if(d.success) {
                     $('#wizardModal').modal('hide');
                     switchView('users');
-                    setMode('auth_mod'); // Switch back to auth mode
-                } else alert('Error: ' + d.error);
+                    setMode('auth_mod');
+                } else {
+                    // Show error inside the wizard modal
+                    let errHtml = `<div id="wizard-error" class="alert alert-danger d-flex align-items-center mt-3" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        <div>${d.error}</div>
+                    </div>`;
+                    $('#pane-4').append(errHtml);
+                }
             });
         }
 
@@ -1252,6 +1384,25 @@
         function freezeUser(id) { fetch(apiUrl, { method: 'POST', body: JSON.stringify({action:'freeze_user', id:id}) }).then(r => r.json()).then(d => loadUsers()); }
         function unfreezeUser(id) { fetch(apiUrl, { method: 'POST', body: JSON.stringify({action:'unfreeze_user', id:id}) }).then(r => r.json()).then(d => loadUsers()); }
         function deleteUser(id) { if(confirm('Delete member?')) fetch(apiUrl, { method: 'POST', body: JSON.stringify({action:'delete_user', id:id}) }).then(r => r.json()).then(d => loadUsers()); }
+
+        function openUserLimits(u) {
+            $('#limit_user_id').val(u.id);
+            $('#user_max_access').val(u.max_access_per_day);
+            $('#user_max_failed').val(u.max_failed_attempts);
+            $('#userLimitsModal').modal('show');
+        }
+
+        function saveUserLimits() {
+            let data = {
+                action: 'update_user_limits',
+                id: $('#limit_user_id').val(),
+                max_access_per_day: $('#user_max_access').val(),
+                max_failed_attempts: $('#user_max_failed').val()
+            };
+            fetch(apiUrl, { method: 'POST', body: JSON.stringify(data) }).then(r => r.json()).then(d => {
+                $('#userLimitsModal').modal('hide'); loadUsers();
+            });
+        }
 
     </script>
 </body>

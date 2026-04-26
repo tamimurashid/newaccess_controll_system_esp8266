@@ -55,20 +55,24 @@ if (isset($data['cardID']) && isset($data['mode'])) {
             if ($row['setting_key'] == 'max_failed_attempts') $max_failed = (int)$row['setting_value'];
         }
 
-        $query = "SELECT id, status, failed_attempts FROM users WHERE card_uid = '$uid'";
+        $query = "SELECT id, status, failed_attempts, max_access_per_day, max_failed_attempts FROM users WHERE card_uid = '$uid'";
         $result = mysqli_query($conn, $query);
 
         if ($result && mysqli_num_rows($result) > 0) {
             $user = mysqli_fetch_assoc($result);
             $user_id = $user['id'];
             
+            // Effective limits (Individual > System)
+            $eff_max_access = ($user['max_access_per_day'] > 0) ? (int)$user['max_access_per_day'] : $max_access;
+            $eff_max_failed = ($user['max_failed_attempts'] > 0) ? (int)$user['max_failed_attempts'] : $max_failed;
+
             if ($user['status'] === 'active') {
                 // Check daily limit
                 $limit_ok = true;
-                if ($max_access > 0) {
+                if ($eff_max_access > 0) {
                     $count_res = mysqli_query($conn, "SELECT COUNT(*) as total FROM logs WHERE card_uid = '$uid' AND action = 'Access Granted' AND DATE(timestamp) = CURDATE()");
                     $count_row = mysqli_fetch_assoc($count_res);
-                    if ($count_row['total'] >= $max_access) {
+                    if ($count_row['total'] >= $eff_max_access) {
                         $limit_ok = false;
                     }
                 }
@@ -82,9 +86,9 @@ if (isset($data['cardID']) && isset($data['mode'])) {
                     $new_failed = $user['failed_attempts'] + 1;
                     mysqli_query($conn, "UPDATE users SET failed_attempts = $new_failed WHERE id = $user_id");
                     
-                    if ($max_failed > 0 && $new_failed >= $max_failed) {
+                    if ($eff_max_failed > 0 && $new_failed >= $eff_max_failed) {
                         mysqli_query($conn, "UPDATE users SET status = 'frozen' WHERE id = $user_id");
-                        $log_action = "Access Denied (Daily Limit - Auto Frozen)";
+                        $log_action = "Access Denied (Limit - Auto Frozen)";
                     }
                 }
             } else {
