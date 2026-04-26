@@ -59,6 +59,8 @@ $queries = [
         card_uid VARCHAR(50) UNIQUE,
         status ENUM('active', 'frozen') DEFAULT 'active',
         failed_attempts INT DEFAULT 0,
+        max_access_per_day INT DEFAULT 0,
+        max_failed_attempts INT DEFAULT 0,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (organization_id) REFERENCES organizations(id) ON DELETE SET NULL,
         FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE SET NULL,

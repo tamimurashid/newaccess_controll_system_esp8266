@@ -785,6 +785,7 @@
         let capturedUid = null;
         let accessChart = null;
         let statusChart = null;
+        let autoRefreshInterval = null;
 
         $(document).ready(function() {
             switchView('dashboard');
@@ -807,12 +808,25 @@
             };
             $('#current-view-title').text(titles[viewId]);
 
+            // Clear any existing refresh interval
+            if(autoRefreshInterval) clearInterval(autoRefreshInterval);
+
+            // Initial load
             if(viewId === 'dashboard') { loadStats(); initCharts(); }
             if(viewId === 'users') loadUsers();
             if(viewId === 'orgs') loadOrgs();
             if(viewId === 'devices') loadDevices();
             if(viewId === 'logs') loadLogs();
             if(viewId === 'settings') loadSettings();
+
+            // Set auto-refresh for dynamic views
+            if(['dashboard', 'logs', 'devices'].includes(viewId)) {
+                autoRefreshInterval = setInterval(() => {
+                    if(viewId === 'dashboard') { loadStats(); updateCharts(); }
+                    if(viewId === 'logs') refreshLogs();
+                    if(viewId === 'devices') loadDevices();
+                }, 5000);
+            }
         }
 
         // --- Stats & Charts ---
@@ -853,6 +867,20 @@
                     },
                     options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { position: 'bottom' } } }
                 });
+            });
+        }
+
+        function updateCharts() {
+            if(!accessChart || !statusChart) { initCharts(); return; }
+            fetch(apiUrl + '?action=get_chart_data').then(r => r.json()).then(d => {
+                accessChart.data.labels = d.labels;
+                accessChart.data.datasets[0].data = d.granted;
+                accessChart.data.datasets[1].data = d.denied;
+                accessChart.update('none');
+            });
+            fetch(apiUrl + '?action=get_stats').then(r => r.json()).then(d => {
+                statusChart.data.datasets[0].data = [d.active_users, d.total_users - d.active_users];
+                statusChart.update('none');
             });
         }
 
@@ -973,20 +1001,33 @@
         function loadLogs() {
             fetch(apiUrl + '?action=get_logs').then(r => r.json()).then(logs => {
                 if ($.fn.DataTable.isDataTable('#logsTable')) $('#logsTable').DataTable().destroy();
-                let h = '';
-                logs.forEach(l => {
-                    let c = l.action.includes('Granted') ? 'text-success fw-bold' : 'text-danger fw-bold';
-                    h += `<tr>
-                        <td><small>${l.timestamp}</small></td>
-                        <td>${l.user_name || '<i class="text-muted">Unknown</i>'}</td>
-                        <td><small>${l.device_name || 'N/A'}</small></td>
-                        <td class="${c}">${l.action}</td>
-                        <td><code class="small">${l.card_uid}</code></td>
-                    </tr>`;
-                });
+                let h = buildLogsHtml(logs);
                 $('#logsTableBody').html(h);
                 $('#logsTable').DataTable({ order: [[0, 'desc']] });
             });
+        }
+
+        function refreshLogs() {
+            fetch(apiUrl + '?action=get_logs').then(r => r.json()).then(logs => {
+                let h = buildLogsHtml(logs);
+                // We only update the body and don't re-init DataTable to avoid jumping
+                $('#logsTableBody').html(h);
+            });
+        }
+
+        function buildLogsHtml(logs) {
+            let h = '';
+            logs.forEach(l => {
+                let c = l.action.includes('Granted') ? 'text-success fw-bold' : 'text-danger fw-bold';
+                h += `<tr>
+                    <td><small>${l.timestamp}</small></td>
+                    <td>${l.user_name || '<i class="text-muted">Unknown</i>'}</td>
+                    <td><small>${l.device_name || 'N/A'}</small></td>
+                    <td class="${c}">${l.action}</td>
+                    <td><code class="small">${l.card_uid}</code></td>
+                </tr>`;
+            });
+            return h;
         }
 
         // --- Wizard Logic ---
